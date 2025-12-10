@@ -27,14 +27,15 @@ const esquemas = {
         }
     },
     "040": {
-        descripcion: "Prácticas 4, elimina 1",
-        imagen: "imagenes/040.png",
+        descripcion: "Ecuaciones Diferenciales (P4 Doble)",
+        imagen: "imagenes/040.jpg",
         inputs: ["P1", "P2", "P3", "P4", "EF"],
-        pesos: [{ n: "P1, P2, P3, P4, EF", v: 20, c: "bg-secondary" }],
+        pesos: [{ n: "Prom. Prácticas (PE)", v: 66.7, c: "bg-primary" }, { n: "Examen Final (EF)", v: 33.3, c: "bg-danger" }],
         calcular: (n) => {
             const p = [n.P1, n.P2, n.P3, n.P4];
             const min = Math.min(...p);
-            const pe = (p.reduce((a, b) => a + b, 0) - min) / 3;
+            const sumaP = p.reduce((a, b) => a + b, 0) + n.P4; // P1+P2+P3+P4+P4
+            const pe = (sumaP - min) / 4;
             return ((2 * pe) + n.EF) / 3;
         }
     },
@@ -58,7 +59,7 @@ const esquemas = {
         descripcion: "Física (P4 Doble + 7 Labs)",
         imagen: "imagenes/042.jpg",
         inputs: ["P1", "P2", "P3", "P4", "Lb1", "Lb2", "Lb3", "Lb4", "Lb5", "Lb6", "Lb7", "EF"],
-        pesos: [{ n: "Prom. Prácticas (PE)", v: 50, c: "bg-primary" }, { n: "Prom. Laboratorio (PL)", v: 25, c: "bg-info" }, { n: "Examen Final (EF)", v: 25, c: "bg-warning" }],
+        pesos: [{ n: "Prom. Prácticas (PE)", v: 50, c: "bg-primary" }, { n: "Prom. Laboratorio (PL)", v: 25, c: "bg-success" }, { n: "Examen Final (EF)", v: 25, c: "bg-warning" }],
         calcular: (n) => {
             const p = [n.P1, n.P2, n.P3, n.P4];
             const minP = Math.min(...p);
@@ -74,6 +75,7 @@ const esquemas = {
     },
     "043": {
         descripcion: "Labs (6) + Examen Oral",
+        imagen: "imagenes/043.jpg",
         inputs: ["P1", "P2", "W1", "Lb1", "Lb2", "Lb3", "Lb4", "Lb5", "Lb6", "C1", "EP", "EF"],
         pesos: [{ n: "Prom. Evaluaciones", v: 50, c: "bg-primary" }, { n: "Examen Parcial (EP)", v: 25, c: "bg-warning" }, { n: "Examen Final (EF)", v: 25, c: "bg-danger" }],
         calcular: (n) => {
@@ -182,7 +184,7 @@ const esquemas = {
     "054": {
         descripcion: "Microeconomía 0.3, 0.3, 0.4",
         imagen: "imagenes/054.jpg",
-        inputs: ["P1", "P2", "P3", "P4", "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "EP", "EF"],
+        inputs: ["P1", "P2", "P4", "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "EP", "EF"],
         pesos: [{ n: "Examen Final (EF)", v: 40, c: "bg-danger" }, { n: "Examen Parcial (EP)", v: 30, c: "bg-warning" }, { n: "Práctica 1 (P1)", v: 7.5, c: "bg-primary" }, { n: "Práctica 2 (P2)", v: 7.5, c: "bg-primary" }, { n: "Controles (P3)", v: 7.5, c: "bg-primary" }, { n: "Investigación (P4)", v: 7.5, c: "bg-primary" }],
         calcular: (n) => {
             const sumaControles = n.C1 + n.C2 + n.C3 + n.C4 + n.C5 + n.C6 + n.C7 + n.C8;
@@ -248,6 +250,7 @@ const esquemas = {
     },
     "130": {
         descripcion: "Variante 130 (Labs + EO)",
+        imagen: "imagenes/130.jpg",
         inputs: ["P1", "P2", "W1", "Lb1", "Lb2", "Lb3", "Lb4", "Lb5", "Lb6", "C1", "EP", "EF"],
         pesos: [{ n: "Prom. Evaluaciones", v: 33.3, c: "bg-primary" }, { n: "Examen Parcial (EP)", v: 33.3, c: "bg-warning" }, { n: "Examen Final (EF)", v: 33.3, c: "bg-danger" }],
         calcular: (n) => {
@@ -266,5 +269,46 @@ const esquemas = {
             const pe = (n.P1 + n.P2 + n.P3) / 3;
             return ((3 * pe) + n.EP + (2 * n.EF)) / 6;
         }
-    }
+    },
+    "132": {
+        descripcion: "Gestión de Procesos (APPC + AFPC)",
+        imagen: "imagenes/130.jpg",
+        inputs: ["P1", "P2", "P3", "P4", "APPC", "AFPC", "EP", "EF"],
+        pesos: [
+            { n: "Prom. Prácticas", v: 25, c: "bg-primary" },
+            { n: "Proyecto (APPC+AFPC)", v: 25, c: "bg-info" },
+            { n: "Examen Parcial (EP)", v: 25, c: "bg-warning" },
+            { n: "Examen Final (EF)", v: 25, c: "bg-danger" }
+        ],
+        calcular: (n) => {
+            // W1 = (APPC + AFPC) / 2
+            const w1 = (n.APPC + n.AFPC) / 2;
+
+            // PE = ((P1+P2+P3+P4-MN)/3 + W1) / 2
+            const p = [n.P1, n.P2, n.P3, n.P4];
+            const min = Math.min(...p);
+            const promP = (p.reduce((a, b) => a + b, 0) - min) / 3;
+            const pe = (promP + w1) / 2;
+
+            // PF = (2*PE + EP + EF) / 4
+            return ((2 * pe) + n.EP + n.EF) / 4;
+        }
+    },
+    "133": {
+        descripcion: "Taller Herramientas Info (0.30, 0.30, 0.40)",
+        imagen: "imagenes/133.jpg",
+        inputs: ["P1", "P2", "P3", "P4", "EP", "EF"],
+        pesos: [
+            { n: "Examen Final (EF)", v: 40, c: "bg-danger" },
+            { n: "Examen Parcial (EP)", v: 30, c: "bg-warning" },
+            { n: "Prom. Evaluaciones (PE)", v: 30, c: "bg-primary" }
+        ],
+        calcular: (n) => {
+            // PE = (P1 + P2 + P3 + P4) / 4
+            const pe = (n.P1 + n.P2 + n.P3 + n.P4) / 4;
+            // PF = PE × 0.30 + EP × 0.30 + EF × 0.40
+            return (0.30 * pe) + (0.30 * n.EP) + (0.40 * n.EF);
+        }
+    },
+
 };

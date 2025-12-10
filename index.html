@@ -4,17 +4,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>CalculadoraFIAUSMP - Calcula las notas y analiza los promedios usando las formulas de los cursos que necesites.</title>
+
+    <title>CalculadoraFIAUSMP - Calcula las notas y analiza los promedios usando las formulas de los cursos que
+        necesites.</title>
 
     <link rel="icon" type="image/png" href="imagenes/logo.png">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Roboto:wght@300;400;500;700;900&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bg-dark': '#0b0d12',
+                        'epics-blue': '#1a45bc',
+                        'epics-blue-hover': '#2563eb',
+                        'official-blue': '#1E88E5',
+                        'card-bg': '#18181b',
+                        'border-color': '#27272a',
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                        'roboto': ['Roboto', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Firebase Auth Module (loads and registers Alpine components) -->
+    <script type="module">
+        // Import and execute auth module FIRST
+        await import('./auth.alpine.js');
+
+        // THEN load Alpine.js dynamically AFTER auth is ready
+        const alpineScript = document.createElement('script');
+        alpineScript.src = 'https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js';
+        alpineScript.defer = true;
+        document.head.appendChild(alpineScript);
+    </script>
 
     <script>(function (w, d, s, l, i) {
             w[l] = w[l] || []; w[l].push({
@@ -24,450 +59,397 @@
                 j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
                     'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
         })(window, document, 'script', 'dataLayer', 'GTM-M5W79TKG');</script>
+
     <style>
-/* --- ESTILOS DEL FOOTER PRO --- */
-/* --- ESTILOS DEL FOOTER V2 (Ajustado) --- */
-footer {
-    background-color: #050507;
-    border-top: 1px solid #1f2126;
-    padding: 60px 0 40px 0;
-    font-size: 0.9rem;
-    margin-top: auto;
-}
+        @keyframes float {
 
-/* Títulos: Azul Apagado (Blue Grey) */
-.footer-heading {
-    color: #546E7A; /* <--- AQUÍ ESTÁ EL AZUL APAGADO */
-    font-family: 'Roboto', sans-serif;
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    letter-spacing: 1px;
-    margin-bottom: 1.5rem;
-}
-
-/* Enlaces del menú (Calculadora, Exámenes...) */
-.footer-link {
-    color: #a1a1aa; 
-    text-decoration: none;
-    display: block; 
-    margin-bottom: 10px;
-    transition: color 0.2s ease;
-}
-
-.footer-link:hover {
-    color: #1E88E5; 
-}
-
-/* Texto del Copyright y Email: TODO GRIS */
-.footer-brand p {
-    color: #888888; /* Gris parejo */
-    margin-bottom: 5px;
-}
-
-.footer-email {
-    color: #888888; /* Gris igual que el texto de arriba */
-    text-decoration: none;
-    font-weight: 400; /* Le bajé el peso para que sea sutil */
-    transition: color 0.2s ease;
-}
-
-.footer-email:hover {
-    text-decoration: underline;
-    color: #a1a1aa; /* Se aclara un poquito al pasar el mouse */
-}
-
-/* Logo Footer */
-.footer-logo-img {
-    height: 50px;
-    opacity: 0.9;
-}
-.footer-logo-text {
-    font-size: 1.5rem;
-    color: #1E88E5;
-    font-weight: 900;
-    letter-spacing: -1px;
-    line-height: 1;
-}
-        /* --- ESTILOS ACTUALIZADOS DEL HEADER --- */
-
-/* Ajuste para el enlace del Logo */
-a.text-decoration-none:hover {
-    text-decoration: none !important; /* Asegura que no salga línea abajo al pasar mouse por el logo */
-    opacity: 0.9; /* Pequeño efecto visual al pasar el mouse */
-}
-
-/* Estilos de los Botones del Menú */
-.nav-link-custom {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 700;
-    font-size: 0.95rem; /* Un pelín más pequeño para que quepan bien */
-    color: #1E88E5; 
-    text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 10px 5px; /* Padding ajustado */
-    transition: all 0.2s ease;
-    border-bottom: 3px solid transparent;
-    white-space: nowrap; /* Evita que el texto se parta en dos líneas */
-}
-
-.nav-link-custom:hover {
-    color: #1565C0;
-    border-bottom-color: #1E88E5;
-}
-
-/* RESPONSIVE: Ajuste para celular */
-@media (max-width: 992px) {
-    .simple-header .container-fluid {
-        flex-direction: column; /* Pone el menú DEBAJO del logo */
-        align-items: center !important; /* Todo centrado */
-        gap: 20px;
-        padding: 0 15px;
-    }
-    
-    .simple-header nav {
-        margin-left: 0 !important;
-        flex-wrap: wrap; /* Si no caben, bajan de línea */
-        justify-content: center;
-    }
-}
-        :root {
-            --bg-dark: #0b0d12;
-            --epics-blue: #1a45bc;
-            --epics-blue-hover: #2563eb;
-            --text-white: #ffffff;
-            --text-grey: #a1a1aa;
-            --card-bg: #18181b;
-            --border-color: #27272a;
-            --cyan-blue: #3b82f6;
-            --official-blue: #1E88E5; /* Tu color azul oficial */
-        }
-
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-white);
-            font-family: 'Inter', 'Roboto', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* --- ESTILOS DE NAVEGACIÓN Y HEADER PRO --- */
-        
-        /* Contenedor del Logo */
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo-text-group {
-            display: flex;
-            flex-direction: column;
-            line-height: 1;
-        }
-
-        .logo-title {
-            font-family: 'Roboto', sans-serif;
-            font-weight: 900;
-            font-size: 3rem;
-            color: var(--official-blue);
-            margin: 0;
-            letter-spacing: -1px;
-        }
-
-        .logo-subtitle {
-            font-family: 'Roboto', sans-serif;
-            font-weight: 700;
-            font-size: 1rem;
-            color: var(--official-blue);
-            text-transform: uppercase;
-            letter-spacing: 0.35em;
-            margin-left: 4px;
-        }
-
-        /* Botón EXÁMENES */
-        .nav-link-custom {
-            font-family: 'Roboto', sans-serif;
-            font-weight: 700;
-            font-size: 1rem;
-            color: var(--official-blue);
-            text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 10px 15px;
-            transition: all 0.2s ease;
-            border-bottom: 3px solid transparent;
-        }
-
-        .nav-link-custom:hover {
-            color: #1565C0;
-            border-bottom-color: var(--official-blue);
-        }
-
-        /* Ajustes Header Móvil */
-        @media (max-width: 768px) {
-            .simple-header .container-fluid {
-                flex-direction: column;
-                align-items: flex-start !important;
-                gap: 20px;
-                padding-left: 20px !important; /* Menos padding en móvil */
-                padding-right: 20px !important;
+            0%,
+            100% {
+                transform: translateY(0);
             }
-            .simple-header nav {
-                margin-left: 0 !important;
+
+            50% {
+                transform: translateY(-15px);
             }
-            .logo-title { font-size: 2.2rem; }
-            .logo-subtitle { font-size: 0.8rem; letter-spacing: 0.2em; }
-            .logo-container img { height: 60px; }
         }
 
-
-        /* --- ESTILOS DEL HERO (CONTENIDO PRINCIPAL) --- */
-        .hero-section {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            padding: 4rem 0;
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
         }
 
-        h1.hero-title {
-            font-size: 3.5rem;
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(to right, #ffffff, #a1a1aa);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        p.hero-subtitle {
-            font-size: 1.1rem;
-            color: var(--text-grey);
-            line-height: 1.6;
-            margin-bottom: 2.5rem;
-            max-width: 90%;
-        }
-
-        .career-label {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--cyan-blue);
-            margin-bottom: 1rem;
-            font-weight: 700;
-        }
-
-        .btn-career {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-white);
-            padding: 12px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-career:hover {
-            background-color: var(--epics-blue);
-            border-color: var(--epics-blue);
-            transform: translateY(-2px);
-            color: white;
-            box-shadow: 0 4px 12px rgba(26, 69, 188, 0.3);
-        }
-
-        /* --- ANIMACIÓN E IMÁGENES --- */
-        .animation-container {
-            position: relative;
-            height: 700px;
-            width: 100%;
+        .bg-radial-blue {
             background: radial-gradient(circle at center, rgba(26, 69, 188, 0.15) 0%, rgba(11, 13, 18, 0) 70%);
-            border-radius: 24px;
-            border: 1px solid var(--border-color);
-            display: flex;
-            justify-content: center;
-            align-items: center; /* Centrado vertical */
-            overflow: hidden;
-            backdrop-filter: blur(10px);
         }
 
-        .calculator-preview-container {
-            position: relative;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .calculator-preview {
-            position: relative;
-            width: 85%;
-            max-width: 550px;
-            height: auto;
-            filter: drop-shadow(0 25px 50px rgba(26, 69, 188, 0.5));
-            animation: floatAnimation 6s ease-in-out infinite;
-            z-index: 3;
-        }
-
-        .calculator-preview img {
-            width: 100%;
-            height: auto;
-            border-radius: 16px;
-        }
-
-        @keyframes floatAnimation {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
-
-        .calculator-shadow-left,
-        .calculator-shadow-right {
-            position: absolute;
-            top: 30px;
-            width: 80%;
-            max-width: 520px;
-            opacity: 0.2;
-            filter: blur(2px) brightness(0.7);
-            z-index: 1;
-        }
-
-        .calculator-shadow-left {
-            left: -50px;
-            transform: scale(0.95) translateY(10px);
-        }
-
-        .calculator-shadow-right {
-            right: -50px;
-            transform: scale(0.95) translateY(10px);
-        }
-
-        .calculator-shadow-left img,
-        .calculator-shadow-right img {
-            width: 100%;
-            height: auto;
-            border-radius: 16px;
-        }
-
-        footer {
-            padding: 2rem 0;
-            text-align: center;
-            color: var(--text-grey);
-            font-size: 0.85rem;
-            border-top: 1px solid var(--border-color);
-            margin-top: auto;
-        }
-
-        /* --- MEDIA QUERIES --- */
-        @media (max-width: 991px) {
-            html, body { overflow-x: hidden; max-width: 100vw; }
-            .container { overflow-x: hidden; max-width: 100%; }
-            .row { margin: 0 !important; }
-            .hero-section { padding: 1.5rem 10px; }
-            .hero-section .row { display: flex; flex-direction: column; }
-            .col-lg-6 { padding: 0 10px !important; width: 100%; max-width: 100%; }
-            .col-lg-6:first-child { order: 2; text-align: center; }
-            .col-lg-6:last-child { order: 1; margin-bottom: 1.5rem; }
-            .hero-title { font-size: 1.4rem; margin-bottom: 1rem; word-wrap: break-word; }
-            .hero-subtitle { font-size: 0.8rem; margin-bottom: 1.5rem; max-width: 100%; }
-            .animation-container { height: 350px; margin-top: 0; }
-            .calculator-preview { width: 95%; max-width: 300px; }
-            .calculator-shadow-left { left: -30px; max-width: 280px; }
-            .calculator-shadow-right { right: -30px; max-width: 280px; }
-            .d-flex.flex-wrap { justify-content: center; gap: 0.4rem !important; }
-            footer { padding: 1rem 10px; font-size: 0.68rem; }
+        .text-gradient {
+            background: linear-gradient(to right, #ffffff, #a1a1aa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
     </style>
 </head>
 
-<body>
+<body class="bg-bg-dark text-white font-inter min-h-screen flex flex-col">
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M5W79TKG" height="0" width="0"
             style="display:none;visibility:hidden"></iframe></noscript>
-    <header class="simple-header mb-5 pt-3">
-    <div class="container-fluid px-5 d-flex align-items-center flex-wrap">
-        
-        <a href="index.html" class="text-decoration-none me-4">
-            <div class="logo-container">
-                <img src="imagenes/logo.png" alt="Logo Calculadora" height="85">
-                <div class="logo-text-group">
-                    <h1 class="logo-title">Calculadora</h1>
-                    <span class="logo-subtitle">FIA USMP</span>
+
+    <!-- ============================================
+         MOBILE HEADER - Fixed Top (CSFloat Style)
+         Solo visible en móvil (lg:hidden)
+         ============================================ -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-zinc-900/95 backdrop-blur-sm border-b border-zinc-800 lg:hidden"
+        x-data="authSystem">
+        <div class="flex items-center justify-between px-4 py-4">
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center">
+                <img src="imagenes/logo.png" alt="Logo" class="h-14 w-14 object-contain">
+            </a>
+
+            <!-- Auth Avatar/Login -->
+            <div class="relative">
+                <!-- Loading -->
+                <div x-show="$store.auth?.loading">
+                    <svg class="animate-spin h-8 w-8 text-official-blue" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                        </circle>
+                        <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
+                    </svg>
+                </div>
+
+                <!-- Not Logged In - Blue Button -->
+                <button x-show="!$store.auth?.loading && !$store.auth?.isLoggedIn" @click="login()"
+                    :disabled="isLoggingIn"
+                    class="flex items-center gap-2 bg-official-blue hover:bg-blue-600 text-white font-bold px-4 py-2 rounded-full transition-all text-sm">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                        <path
+                            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                        <path
+                            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                        <path
+                            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                    </svg>
+                    <span x-text="isLoggingIn ? 'Entrando...' : 'Iniciar Sesión'"></span>
+                </button>
+
+                <!-- Logged In - User Avatar -->
+                <div x-show="!$store.auth?.loading && $store.auth?.isLoggedIn" class="relative">
+                    <button @click="toggleDropdown()"
+                        class="w-12 h-12 rounded-full overflow-hidden border-2 border-official-blue">
+                        <img :src="$store.auth?.userPhoto" alt="Avatar" class="w-full h-full object-cover">
+                    </button>
+
+                    <!-- Mobile Dropdown -->
+                    <div x-show="showDropdown" x-transition @click.away="closeDropdown()"
+                        class="absolute right-0 mt-2 w-56 bg-zinc-900 border border-zinc-700 rounded-lg shadow-xl overflow-hidden">
+                        <div class="px-4 py-3 border-b border-zinc-700">
+                            <p class="text-sm font-bold text-white truncate" x-text="$store.auth?.userName"></p>
+                            <p class="text-xs text-gray-400 truncate" x-text="$store.auth?.userEmail"></p>
+                        </div>
+                        <a href="promedioponderado.html"
+                            class="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-zinc-800">
+                            <span>📊</span><span>Mi Promedio</span>
+                        </a>
+                        <button @click="logout()"
+                            class="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-400 hover:bg-zinc-800 border-t border-zinc-700">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
+                            <span>Cerrar Sesión</span>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </a>
+        </div>
+    </header>
 
-        <nav class="d-flex gap-4 align-items-center ms-lg-4">
-            
-            <a href="index.html" class="nav-link-custom">CALCULADORA</a>
-            
-            <a href="examenes.html" class="nav-link-custom">EXÁMENES</a>
-            
-            <a href="funcionamiento.html" class="nav-link-custom">¿CÓMO FUNCIONA?</a>
-            
-        </nav>
+    <!-- ============================================
+         MOBILE BOTTOM NAVIGATION - Fixed Bottom
+         Solo visible en móvil (lg:hidden)
+         ============================================ -->
+    <nav class="fixed bottom-0 left-0 right-0 z-50 bg-zinc-900/95 backdrop-blur-sm border-t border-zinc-800 lg:hidden">
+        <div class="flex items-center justify-around py-2">
+            <!-- Calculadora (Activo) -->
+            <a href="index.html" class="flex flex-col items-center gap-1 px-3 py-2 text-official-blue">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+                <span class="text-xs font-medium">Calculadora</span>
+            </a>
 
-    </div>
-</header>
+            <!-- Exámenes -->
+            <a href="examenes.html"
+                class="flex flex-col items-center gap-1 px-3 py-2 text-gray-400 hover:text-white transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <span class="text-xs font-medium">Exámenes</span>
+            </a>
+
+            <!-- Mi Promedio -->
+            <a href="promedioponderado.html"
+                class="flex flex-col items-center gap-1 px-3 py-2 text-gray-400 hover:text-green-400 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                <span class="text-xs font-medium">Mi Promedio</span>
+            </a>
+
+            <!-- FAQ -->
+            <a href="faq.html"
+                class="flex flex-col items-center gap-1 px-3 py-2 text-gray-400 hover:text-white transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="text-xs font-medium">FAQ</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- ============================================
+         DESKTOP HEADER - Original (hidden on mobile)
+         Solo visible en desktop (hidden lg:block)
+         ============================================ -->
+    <header class="mb-12 pt-3 hidden lg:block">
+        <div class="w-full px-5 flex flex-wrap items-center justify-center lg:justify-between gap-6 lg:gap-0">
+
+            <!-- Logo + Nav (izquierda) -->
+            <div class="flex flex-wrap items-center justify-center lg:justify-start gap-6 lg:gap-0">
+                <a href="index.html" class="text-decoration-none hover:opacity-90 transition-opacity mr-0 lg:mr-4">
+                    <div class="flex items-center gap-4">
+                        <img src="imagenes/logo.png" alt="Logo Calculadora" class="h-16 lg:h-[85px]">
+                        <div class="flex flex-col leading-none">
+                            <h1 class="font-roboto font-black text-3xl lg:text-5xl text-official-blue -tracking-tight">
+                                Calculadora</h1>
+                            <span
+                                class="font-roboto font-bold text-xs lg:text-base text-official-blue uppercase tracking-[0.35em] ml-1">FIA
+                                USMP</span>
+                        </div>
+                    </div>
+                </a>
+
+                <nav
+                    class="flex gap-4 lg:gap-6 items-center flex-wrap justify-center lg:justify-start lg:flex-nowrap lg:ml-4">
+                    <a href="index.html"
+                        class="font-roboto font-bold text-sm lg:text-base text-official-blue uppercase tracking-wide px-3 py-2 transition-all duration-200 border-b-3 border-transparent hover:text-blue-700 hover:border-official-blue whitespace-nowrap">CALCULADORA</a>
+                    <a href="examenes.html"
+                        class="font-roboto font-bold text-sm lg:text-base text-official-blue uppercase tracking-wide px-3 py-2 transition-all duration-200 border-b-3 border-transparent hover:text-blue-700 hover:border-official-blue whitespace-nowrap">EXÁMENES</a>
+                    <a href="faq.html"
+                        class="font-roboto font-bold text-sm lg:text-base text-official-blue uppercase tracking-wide px-3 py-2 transition-all duration-200 border-b-3 border-transparent hover:text-blue-700 hover:border-official-blue whitespace-nowrap">¿CÓMO
+                        FUNCIONA?</a>
+                    <!-- Link a Promedio Ponderado (siempre visible) -->
+                    <a href="promedioponderado.html"
+                        class="font-roboto font-bold text-sm lg:text-base text-green-400 uppercase tracking-wide px-3 py-2 transition-all duration-200 border-b-3 border-transparent hover:text-green-300 hover:border-green-400 whitespace-nowrap">📊
+                        MI PROMEDIO</a>
+                </nav>
+            </div>
+
+            <!-- Auth Section (derecha) -->
+            <div x-data="authSystem" class="relative">
+                <!-- Loading State -->
+                <div x-show="$store.auth?.loading" class="text-gray-400 text-sm">
+                    <svg class="animate-spin h-5 w-5 text-official-blue" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                        </circle>
+                        <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
+                    </svg>
+                </div>
+
+                <!-- Not Logged In -->
+                <button x-show="!$store.auth?.loading && !$store.auth?.isLoggedIn" @click="login()"
+                    :disabled="isLoggingIn"
+                    class="flex items-center gap-2 bg-official-blue hover:bg-blue-600 text-white font-bold px-4 py-2 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-official-blue/30 disabled:opacity-50 disabled:cursor-wait">
+                    <svg x-show="!isLoggingIn" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                        <path
+                            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                        <path
+                            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                        <path
+                            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                    </svg>
+                    <svg x-show="isLoggingIn" class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                        fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                        </circle>
+                        <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
+                    </svg>
+                    <span x-text="isLoggingIn ? 'Entrando...' : 'Iniciar Sesión'"></span>
+                </button>
+
+                <!-- Logged In - User Avatar + Dropdown -->
+                <div x-show="!$store.auth?.loading && $store.auth?.isLoggedIn" class="relative">
+                    <button @click="toggleDropdown()"
+                        class="flex items-center gap-3 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 px-3 py-2 rounded-lg transition-all duration-200">
+                        <img :src="$store.auth?.userPhoto" alt="Avatar"
+                            class="w-8 h-8 rounded-full border-2 border-official-blue object-cover">
+                        <span class="text-white font-medium hidden sm:block" x-text="$store.auth?.userName"></span>
+                        <svg class="w-4 h-4 text-gray-400 transition-transform duration-200"
+                            :class="showDropdown ? 'rotate-180' : ''" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div x-show="showDropdown" x-transition:enter="transition ease-out duration-200"
+                        x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-150"
+                        x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+                        @click.away="closeDropdown()"
+                        class="absolute right-0 mt-2 w-64 bg-zinc-900 border border-zinc-700 rounded-lg shadow-xl z-50 overflow-hidden">
+
+                        <!-- User Info -->
+                        <div class="px-4 py-3 border-b border-zinc-700">
+                            <p class="text-sm font-bold text-white" x-text="$store.auth?.user?.displayName"></p>
+                            <p class="text-xs text-gray-400 truncate" x-text="$store.auth?.userEmail"></p>
+                        </div>
+
+                        <!-- Menu Items -->
+                        <div class="py-2">
+                            <a href="promedioponderado.html"
+                                class="flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:bg-zinc-800 hover:text-white transition-colors">
+                                <span>📊</span>
+                                <span>Mi Promedio Ponderado</span>
+                            </a>
+                        </div>
+
+                        <!-- Logout -->
+                        <div class="border-t border-zinc-700 py-2">
+                            <button @click="logout()"
+                                class="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-400 hover:bg-zinc-800 hover:text-red-300 transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                </svg>
+                                <span>Cerrar Sesión</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </header>
 
 
-    <div class="container">
-        <main class="hero-section">
-            <div class="row align-items-center">
-                
-                <div class="col-lg-6 pe-lg-5">
-                    <h1 class="hero-title">
-                        Obtén los cálculos de promedios que necesitas con FIAUSMPCalculadora
+    <!-- Mobile: Add padding for fixed header/footer -->
+    <div class="container mx-auto px-4 flex-1 pt-16 pb-20 lg:pt-0 lg:pb-0">
+        <main class="flex items-center py-8 lg:py-16">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center w-full">
+
+                <!-- Left Column: Text Content -->
+                <div class="order-2 lg:order-1 text-center lg:text-left lg:pr-5">
+                    <h1 class="text-2xl sm:text-3xl lg:text-5xl font-bold leading-tight mb-6 text-gradient">
+                        Obtén los cálculos de promedios que necesitas con CalculadoraFIAUSMP
                     </h1>
-                    <p class="hero-subtitle">
-                        FIAUSMPCalculadora proporciona un sistema de cálculos y herramientas para el usuario que
-                        impulsan y motivan al conocimiento de su promedio y cuánto de importancia tiene para su
-                        promedio.
+                    <p class="text-base lg:text-lg text-gray-400 leading-relaxed mb-10 max-w-full lg:max-w-[90%]">
+                        CalculadoraFIAUSMP proporciona un sistema de cálculos y herramientas para el usuario que
+                        impulsan y motivan al conocimiento de sus promedios y cuánto de importancia tiene para su
+                        ciclo estudiantil.
                     </p>
 
-                    <div class="career-selector mt-5">
-                        <p class="career-label">Elija su carrera a continuación</p>
-                        <div class="d-flex flex-wrap gap-3">
-                            <a href="carrera.html?carrera=ingSistemas" class="btn-career">
+                    <div class="mt-8 lg:mt-12">
+                        <p class="text-sm lg:text-base uppercase tracking-wider text-blue-500 mb-4 font-bold">Elija su
+                            carrera a continuación</p>
+                        <div class="flex flex-wrap gap-3 justify-center lg:justify-start">
+                            <a href="carrera.html?carrera=ingSistemas"
+                                class="bg-card-bg border border-zinc-700 text-white px-5 py-3 rounded-lg font-medium transition-all duration-200 hover:border-blue-600 hover:bg-blue-600 hover:text-white">
                                 Ingeniería de Computación y Sistemas
                             </a>
-                            <a href="carrera.html?carrera=ingCivil" class="btn-career">
+                            <a href="carrera.html?carrera=ingCivil"
+                                class="bg-card-bg border border-zinc-700 text-white px-5 py-3 rounded-lg font-medium transition-all duration-200 hover:border-blue-600 hover:bg-blue-600 hover:text-white">
                                 Ingeniería Civil
                             </a>
-                            <a href="carrera.html?carrera=ingIndustrial" class="btn-career">
+                            <a href="carrera.html?carrera=ingIndustrial"
+                                class="bg-card-bg border border-zinc-700 text-white px-5 py-3 rounded-lg font-medium transition-all duration-200 hover:border-blue-600 hover:bg-blue-600 hover:text-white">
                                 Ingeniería Industrial
                             </a>
-                            <a href="carrera.html?carrera=arquitectura" class="btn-career">
+                            <a href="carrera.html?carrera=arquitectura"
+                                class="bg-card-bg border border-zinc-700 text-white px-5 py-3 rounded-lg font-medium transition-all duration-200 hover:border-blue-600 hover:bg-blue-600 hover:text-white">
                                 Arquitectura
                             </a>
-                            <a href="carrera.html?carrera=aeronautica" class="btn-career">
+                            <a href="carrera.html?carrera=aeronautica"
+                                class="bg-card-bg border border-zinc-700 text-white px-5 py-3 rounded-lg font-medium transition-all duration-200 hover:border-blue-600 hover:bg-blue-600 hover:text-white">
                                 Ciencias Aeronáuticas
+                            </a>
+                        </div>
+
+                        <!-- Mobile Quick Actions - Solo móvil (lg:hidden) -->
+                        <p class="text-sm uppercase tracking-wider text-blue-500 mb-3 mt-8 font-bold lg:hidden">
+                            Funciones</p>
+                        <div class="flex flex-row gap-2 lg:hidden">
+                            <a href="examenes.html"
+                                class="flex-1 flex items-center justify-center gap-1 bg-official-blue hover:bg-blue-600 text-white font-bold py-3 px-2 rounded-xl transition-all text-xs">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                <span>Exámenes</span>
+                            </a>
+                            <a href="faq.html"
+                                class="flex-1 flex items-center justify-center gap-1 bg-official-blue hover:bg-blue-600 text-white font-bold py-3 px-2 rounded-xl transition-all text-xs">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span>FAQ</span>
+                            </a>
+                            <a href="promedioponderado.html"
+                                class="flex-1 flex items-center justify-center gap-1 bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-2 rounded-xl transition-all text-xs">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                </svg>
+                                <span>Promedio</span>
                             </a>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-lg-6">
-                    <div class="animation-container">
-                        <div class="calculator-preview-container">
-                            <div class="calculator-shadow-left">
-                                <img src="calculadora_preview.png" alt="Calculadora Shadow">
+                <!-- Right Column: Animation Preview -->
+                <div class="order-1 lg:order-2">
+                    <div
+                        class="relative h-[350px] lg:h-[700px] w-full bg-radial-blue rounded-3xl border border-zinc-800 flex justify-center items-center overflow-hidden backdrop-blur-sm">
+                        <div class="relative w-full flex justify-center items-center">
+                            <div
+                                class="absolute top-7 left-[-30px] lg:left-[-50px] w-4/5 max-w-[280px] lg:max-w-[520px] opacity-20 blur-sm brightness-75 z-10">
+                                <img src="calculadora_preview.png" alt="Calculadora Shadow"
+                                    class="w-full h-auto rounded-2xl">
                             </div>
 
-                            <div class="calculator-preview">
-                                <img src="calculadora_preview.png" alt="Preview Calculadora FIA">
+                            <div class="relative w-[95%] lg:w-4/5 max-w-[300px] lg:max-w-[550px] z-30 drop-shadow-2xl animate-float"
+                                style="filter: drop-shadow(0 25px 50px rgba(26, 69, 188, 0.5));">
+                                <img src="calculadora_preview.png" alt="Preview Calculadora FIA"
+                                    class="w-full h-auto rounded-2xl">
                             </div>
 
-                            <div class="calculator-shadow-right">
-                                <img src="calculadora_preview.png" alt="Calculadora Shadow">
+                            <div
+                                class="absolute top-7 right-[-30px] lg:right-[-50px] w-4/5 max-w-[280px] lg:max-w-[520px] opacity-20 blur-sm brightness-75 z-10">
+                                <img src="calculadora_preview.png" alt="Calculadora Shadow"
+                                    class="w-full h-auto rounded-2xl">
                             </div>
                         </div>
 
-                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 300px; background: var(--epics-blue); filter: blur(120px); opacity: 0.3; z-index: 0;">
+                        <!-- Blur effect -->
+                        <div
+                            class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-epics-blue blur-[120px] opacity-30 z-0">
                         </div>
                     </div>
                 </div>
@@ -475,49 +457,62 @@ a.text-decoration-none:hover {
             </div>
         </main>
 
-        <footer>
-    <div class="container">
-        <div class="row">
-            
-            <div class="col-lg-5 col-md-12 mb-5 mb-lg-0 d-flex flex-column align-items-center text-center">
-                
-                <div class="d-flex align-items-center gap-3 mb-3">
-                    <img src="imagenes/logo.png" alt="Logo Footer" class="footer-logo-img">
-                    <div class="d-flex flex-column align-items-start">
-                        <span class="footer-logo-text">Calculadora</span>
-                        <span style="font-size: 0.7rem; color: #1E88E5; letter-spacing: 0.3em; font-weight: 700;">FIA USMP</span>
+        <!-- Footer - Visible on all devices, appears above mobile bottom nav -->
+        <footer class="bg-zinc-950 border-t border-zinc-800 pt-16 pb-24 lg:pb-16 px-5 mt-auto">
+            <div class="container mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+                    <div class="lg:col-span-5 flex flex-col items-center text-center mb-5 lg:mb-0">
+
+                        <div class="flex items-center gap-3 mb-3">
+                            <img src="imagenes/logo.png" alt="Logo Footer" class="h-12 opacity-90">
+                            <div class="flex flex-col items-start">
+                                <span
+                                    class="text-2xl text-official-blue font-black -tracking-tight leading-none">Calculadora</span>
+                                <span class="text-[0.7rem] text-official-blue tracking-[0.3em] font-bold">FIA
+                                    USMP</span>
+                            </div>
+                        </div>
+
+                        <div class="text-gray-500">
+                            <p class="mb-1">2025</p>
+                            <a href="mailto:alessandro_morales@usmp.pe"
+                                class="text-gray-500 font-normal hover:underline hover:text-gray-400 transition-colors duration-200">alessandro_morales@usmp.pe</a>
+                        </div>
                     </div>
+
+                    <div class="lg:col-span-3 text-center lg:text-left mb-4 lg:mb-0">
+                        <h5 class="text-blue-gray-600 font-bold uppercase text-sm tracking-wider mb-6"
+                            style="color: #546E7A;">Funciones</h5>
+                        <ul class="list-none">
+                            <li><a href="index.html"
+                                    class="text-gray-400 block mb-2 hover:text-official-blue transition-colors duration-200">Calculadora</a>
+                            </li>
+                            <li><a href="examenes.html"
+                                    class="text-gray-400 block mb-2 hover:text-official-blue transition-colors duration-200">Exámenes</a>
+                            </li>
+                            <li><a href="promedioponderado.html"
+                                    class="text-gray-400 block mb-2 hover:text-green-400 transition-colors duration-200">Mi
+                                    Promedio</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="lg:col-span-3 text-center lg:text-left">
+                        <h5 class="text-blue-gray-600 font-bold uppercase text-sm tracking-wider mb-6"
+                            style="color: #546E7A;">Sobre Nosotros</h5>
+                        <ul class="list-none">
+                            <li><a href="faq.html"
+                                    class="text-gray-400 block mb-2 hover:text-official-blue transition-colors duration-200">¿Cómo
+                                    Funciona?</a></li>
+                        </ul>
+                    </div>
+
                 </div>
-                
-                <div class="footer-brand">
-                    <p class="mb-1">2025</p>
-                    <a href="mailto:alessandro_morales@usmp.pe" class="footer-email">alessandro_morales@usmp.pe</a>
-                </div>
             </div>
-
-            <div class="col-lg-3 col-md-6 mb-4 mb-md-0 text-center text-lg-start">
-                <h5 class="footer-heading">Funciones</h5>
-                <ul class="list-unstyled">
-                    <li><a href="index.html" class="footer-link">Calculadora</a></li>
-                    <li><a href="examenes.html" class="footer-link">Exámenes</a></li>
-                </ul>
-            </div>
-
-            <div class="col-lg-3 col-md-6 text-center text-lg-start">
-                <h5 class="footer-heading">Sobre Nosotros</h5>
-                <ul class="list-unstyled">
-                    <li><a href="funcionamiento.html" class="footer-link">¿Cómo Funciona?</a></li>
-                </ul>
-            </div>
-
-        </div>
-    </div>
-</footer>
+        </footer>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
 </body>
 
 </html>
