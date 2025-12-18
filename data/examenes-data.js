@@ -1,0 +1,145 @@
+/**
+ * Catálogo de exámenes disponibles
+ * Estructura: clave del curso -> tipo de examen -> array de ciclos disponibles
+ * 
+ * Ejemplo de nombre de archivo: MD-PC1-241.pdf
+ * - MD = clave del curso (Matemática Discreta)
+ * - PC1 = tipo de examen (Práctica Calificada 1)
+ * - 241 = ciclo académico (2024-1)
+ */
+
+const examenesDisponibles = {
+    // Matemática Discreta
+    'MD': {
+        'PC1': ['241'],  // MD-PC1-241.pdf existe
+        'PC2': ['241'],
+        'PC3': ['242'],
+        'PC4': ['241'], // MD-PC2-241.pdf ✅ NUEVO
+        'EF': ['241'], // MD-PC2-241.pdf ✅ NUEVO
+        // Agrega más tipos y ciclos conforme subas PDFs
+        // 'PC2': ['241', '242'],
+        // 'PC3': ['241'],
+        // 'PC4': ['241'],
+        // 'EF': ['241']
+    },
+    'F1': {
+        'PC1': ['241'],
+        'LAB1': ['232'], // MD-PC1-241.pdf existe
+        'LAB6': ['202'], // MD-PC2-241.pdf ✅ NUEVO
+        // Agrega más tipos y ciclos conforme subas PDFs
+        // 'PC2': ['241', '242'],
+        // 'PC3': ['241'],
+        // 'PC4': ['241'],
+        // 'EF': ['241']
+    },
+
+    // Física 2 - Prof. Castro
+    // Carpeta: pdfs/F2C/
+    'F2C': {
+        'PC1': ['232','241','242','251','250','2502','2503'],
+        'PC2': ['242','240','251','252','250','2502'],
+        'PC3': ['202','241','242','251','252','250',],
+        'PC4': ['131','151','162','172','200','241','242','251','250','2502'],
+        'EF': ['151','201','250'],
+        'LAB1': ['A','B'],
+        'LAB2': ['A','B'],
+        'LAB3': ['A','B'],
+        'LAB4': ['A'],
+        'LAB5': ['A'],
+        'LAB6': ['A'],
+    },
+
+    // Física 2 - Prof. Tejada
+    // Carpeta: pdfs/F2T/
+    'F2T': {
+        'PC1': ['231','241','242','251'],
+        'PC2': ['232','242'],
+        'PC3': ['242','251','252'],
+        'PC4': ['241'],
+        'EF': ['201'],
+        'LAB1': ['A','B'],
+        'LAB2': ['A','B'],
+        'LAB3': ['A','B'],
+        'LAB4': ['A'],
+        'LAB5': ['A'],
+        'LAB6': ['A'],
+    },
+
+    // Geometría Analítica  
+    'GA': {
+         'PC1': ['231','2312','241','242','251','252'],
+         'PC2': ['231','2312','241','242','251'],
+         'PC3': ['231','232','241','251'],
+         'PC4': ['231','232','241','242','251'],
+         'EF': ['231','232','241','242','251']
+        },
+
+    'EST2': {
+         'PC1': ['251'],
+         'PC2': ['251'],
+         'PC3': ['251'],
+         'PC4': ['251'],
+         'EF': ['241']
+        },
+
+    // Cálculo I
+    // 'C1': {
+    //     'PC1': ['241', '242'],
+    //     'PC2': ['241'],
+    //     'EF': ['241']
+    // },
+
+    // Agrega más cursos conforme subas PDFs...
+};
+
+/**
+ * Función helper para verificar si existe un PDF
+ * @param {string} clave - Clave del curso (ej: 'MD')
+ * @param {string} tipo - Tipo de examen (ej: 'PC1')
+ * @param {string} ciclo - Ciclo académico (ej: '241')
+ * @returns {boolean}
+ */
+function existeExamen(clave, tipo, ciclo) {
+    return examenesDisponibles[clave]?.[tipo]?.includes(ciclo) || false;
+}
+
+/**
+ * Obtiene la URL del PDF
+ * Nueva estructura: pdfs/CLAVE/TIPO-CICLO.pdf
+ * Ejemplo: pdfs/MD/PC1-241.pdf
+ * @param {string} clave - Clave del curso (será la carpeta)
+ * @param {string} tipo - Tipo de examen
+ * @param {string} ciclo - Ciclo académico
+ * @returns {string} URL del PDF
+ */
+function getPdfUrl(clave, tipo, ciclo) {
+    return `pdfs/${clave}/${tipo}-${ciclo}.pdf`;
+}
+
+/**
+ * Obtiene todos los tipos de examen disponibles para un curso
+ * @param {string} clave - Clave del curso
+ * @returns {string[]} Array de tipos disponibles
+ */
+function getTiposDisponibles(clave) {
+    if (!examenesDisponibles[clave]) return [];
+    return Object.keys(examenesDisponibles[clave]);
+}
+
+/**
+ * Obtiene todos los ciclos disponibles para un curso y tipo
+ * @param {string} clave - Clave del curso
+ * @param {string} tipo - Tipo de examen
+ * @returns {string[]} Array de ciclos disponibles
+ */
+function getCiclosDisponibles(clave, tipo) {
+    return examenesDisponibles[clave]?.[tipo] || [];
+}
+
+/**
+ * Obtiene todos los cursos que tienen exámenes disponibles
+ * @returns {string[]} Array de claves de cursos
+ */
+function getCursosConExamenes() {
+    return Object.keys(examenesDisponibles);
+}
