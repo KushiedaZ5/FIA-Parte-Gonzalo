@@ -101,6 +101,14 @@ const examenesDisponibles = {
          'PC4': ['251'],
          'EF': ['241']
         },
+
+    // Microeconomia
+    'MICRO': {
+         'PC1': ['252'],
+         'PC2': ['252'],
+         'EP': ['251','252'],
+         'EF': ['252']
+        },
         
     // Cálculo I
     // Carpeta: pdfs/C1/
